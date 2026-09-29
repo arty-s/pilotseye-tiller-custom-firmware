@@ -49,17 +49,30 @@ Also:
 
 The updater's interface is in Russian; the button names are given below.
 
-1. Download `Tiller-Updater-…zip` from [Releases](../../releases/latest) and unpack it.
-2. Connect the tiller with a USB cable (the motor supply can stay on). Run `Tiller.exe`.
-3. Wait for the green `<COM port> найден` ("found").
-4. Keep the backup option on: the updater first saves the full 16 MB flash image
+### First install (over the stock firmware)
+
+The stock firmware has no way to be switched into the bootloader over USB, so
+the first time you need the buttons on the ESP32 module inside:
+
+1. Unplug the motor power supply and USB, remove the bottom cover.
+2. Download `Tiller-Updater-…zip` from [Releases](../../releases/latest), unpack
+   it and run `Tiller.exe`.
+3. Connect the tiller with USB (the port you normally use for the sim).
+4. On the ESP32 module hold **BOOT**, press and release **RST**, then release
+   **BOOT**. The updater shows the green `<COM port> найден` ("found").
+5. Keep the backup option on: the updater first saves the full 16 MB flash image
    to `%LOCALAPPDATA%\Tiller\backups\…\before-flash.bin`, which lets you return
    to the stock firmware.
-5. Press `Обновить` ("Update") and don't unplug USB until `Готово` ("Done").
+6. Press `Обновить` ("Update") and don't unplug USB until `Готово` ("Done").
+7. Put the cover back, plug the motor supply in, then unplug and replug USB.
+   The tiller starts with the new firmware and calibrates its travel (it can't
+   without motor power at start-up).
 
-The updater switches the tiller into its bootloader over USB, so the case does
-not need to be opened. If an update is interrupted, open the case, hold
-**BOOT**, press **RST** on the ESP32 module and run the update again.
+### Later updates
+
+Just run the new updater with the tiller connected and press `Обновить`: this
+firmware switches itself into the bootloader over USB, no need to open the case.
+If an update is ever interrupted, use **BOOT** + **RST** as above and run it again.
 
 **Requirements:** Windows 10/11 x64 and a **12 V** motor supply. The firmware
 is tuned for 12 V; the device accepts up to 24 V, but at 24 V the motor would

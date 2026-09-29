@@ -41,6 +41,9 @@ python -m esptool --chip esp32s3 --before no-reset --after watchdog-reset write-
 
 `touch_to_bootloader.py` opens the tiller's serial port at 1200 baud, which
 restarts it into the ROM bootloader (a new COM port with VID `303A` appears).
+This works only when this firmware is already running: the stock firmware has
+no serial port, so for the first install remove the bottom cover and use the
+**BOOT** + **RST** buttons on the ESP32 module.
 
 ## Serial console
 
