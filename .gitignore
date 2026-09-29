@@ -1,0 +1,15 @@
+# build output
+build/
+firmware/build*/
+desktop/release/
+desktop/build/
+**/bin/
+**/obj/
+*.spec
+.venv/
+__pycache__/
+*.pyc
+# firmware package for desktop/build.ps1 (download from Releases)
+firmware-package/
+# flash images and backups never go into the repo
+*.bin
