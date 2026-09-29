@@ -9,21 +9,24 @@ On USB it shows up as `PilotsEYE-Studios` / `PilotsEYE-` (VID:PID `031F:9001`).
 
 ## The device
 
-A tiller for flight simulators (MSFS, X-Plane, Prepar3D) with a motor that
+A tiller for flight simulators (MSFS, X-Plane and others) with a motor that
 returns the handle to center. Inside:
 
 - ESP32-S3 module (16 MB flash, 8 MB PSRAM);
 - a brushless gimbal motor with a DRV8313 driver, powered by an external supply;
 - an AS5600 magnetic angle sensor;
-- two knobs (red and blue) to adjust the centering feel, and a button on the handle.
+- two knobs (red and blue) to adjust the centering feel, and a **DISC** (pedal
+  disconnect) button on the handle.
 
-To the PC it is a USB game controller with one axis and one button.
+To the PC it is a USB game controller with one axis and one button. It ships
+with a 12 V / 2 A power supply and is sold, for example, in the
+[Simplayer official store on AliExpress](https://aliexpress.ru/item/1005010218144117.html).
 
 ## What the stock firmware gets wrong, and what this firmware fixes
 
 | Stock firmware | This firmware |
 |---|---|
-| Randomly stops responding in the sim and stays dead until the tiller is power-cycled. | Fixed at the cause. Sensor reads have timeouts and I²C bus recovery, so the control loop can no longer hang. The USB stack was moved to current Arduino-ESP32 3.3 / ESP-IDF 5.5 / TinyUSB 0.21. Watchdogs cover every task. If USB ever stalls, only USB reconnects: the motor keeps centering and the calibration is kept. |
+| Randomly stops responding in the sim and stays dead until it is reset. | Fixed at the cause. Sensor reads have timeouts and I²C bus recovery, so the control loop can no longer hang. The USB stack was moved to current Arduino-ESP32 3.3 / ESP-IDF 5.5 / TinyUSB 0.21. Watchdogs cover every task. If USB ever stalls, only USB reconnects: the motor keeps centering and the calibration is kept. |
 | The knobs are read only at power-up; turning them does nothing until a restart. | The knobs work live. |
 | Allows up to 12 V on the motor, more than a 12 V supply can deliver cleanly, so strong returns can feel notchy. | The voltage is capped at the clean maximum (6.9 V at 12 V): the same strength, smooth. |
 | No way to see what the device is doing. | A USB serial console with status, diagnostics and tuning. |
@@ -38,6 +41,7 @@ Also:
   moving the handle wakes it, and the spring fades in over 0.2 s, so you don't feel it;
 - the travel is calibrated automatically at every power-up (the motor gently
   drives to both end stops and takes the middle as center);
+  holding DISC for 1.5 s recalibrates;
 - the USB identity (VID/PID, names, HID descriptor) is identical to the stock
   one, so the simulator sees the same device and your bindings stay.
 
